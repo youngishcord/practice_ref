@@ -52,7 +52,7 @@ def delete_document(collection, query):
     """
     collection.delete_one(query)
 
-#delete_document(collection, {'_id': id_})
+delete_document(collection, {'name': "FRIENDS"})
 '''print(client.list_databases())
 for k in client.list_databases():
     print(k)
@@ -63,7 +63,7 @@ for j in db.list_collections():
 
 
 
-print(type(new_show))
+'''print(type(new_show))
 print(new_show)
 new_show = json.dumps(new_show)
 print(type(new_show))
@@ -78,4 +78,4 @@ if new_show[0] == "{":
 else:
     print("wrong format for deserialization")
 print(type(new_show))
-print(new_show)
+print(new_show)'''
