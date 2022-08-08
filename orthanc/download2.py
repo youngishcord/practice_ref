@@ -20,9 +20,9 @@ import os
 @click.command()
 @click.option('--res', default='patients', help='choose one of [patients, studies, series]')
 ########################### убрать /\ вот это на '' #########################################
-@click.option('--id', default=None, help='you can write resurces id in call')
+@click.option('--id', default=None, help='you can write resources id in call')
 @click.option('--login', prompt='login', help='enter login')
-@click.option('--passw', prompt='password', help='enter password')
+@click.option('--passw', prompt='password', help='enter password', hide_input=True)
 def main(res, id, login, passw):
     '''
     download DICOM files as zip archive
@@ -50,11 +50,11 @@ def main(res, id, login, passw):
     print(id_list)
     
     if id == None:
-        id = input('input resurce id : ')
+        id = input('input resource id: ')
     
     if id not in id_list:
         print('wrong id')
-        return 
+        return
     
     url = f'http://localhost:8042/{res}/{id}/archive'
     r = requests.get(url, auth=basic)

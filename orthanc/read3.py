@@ -4,10 +4,10 @@ import requests
 import json
 
 @click.command()
-@click.option('--res', default='patients', help='choose one of [patients, studies, series, instances]')
-########################### убрать /\ вод это на ''
-@click.option('--login', prompt='login: ', help='enter login')
-@click.option('--passw', prompt='password: ', help='enter password')
+@click.option('--res', default='patients', show_default=True,
+                help='choose one of [patients, studies, series, instances]')
+@click.option('--login', prompt='login', help='enter login')
+@click.option('--passw', prompt='password', help='enter password', hide_input=True)
 def main(res, login, passw):
     '''
     can read data from patients, studies, series, instances
@@ -30,15 +30,14 @@ def main(res, login, passw):
         return
 
     url = f'http://localhost:8042/{res}'
-    r = requests.get(url, auth=basic)
     
-    list_data = r.content.decode('utf-8')
+    id_list = requests.get(url, auth=basic).content.decode('utf-8')
     print(f'list of {res}:')
-    print(list_data)
-    list_data = json.loads(list_data)
+    print(id_list)
+    id_list = json.loads(id_list)
 
-    for i in list_data:
-        url = f'http://localhost:8042/{res}/{i}'
+    for id in id_list:
+        url = f'http://localhost:8042/{res}/{id}'
         print(requests.get(url, auth=basic).content.decode('utf-8'), end='\n\n')
         print('-----------------------------------------------------------', end='\n\n')
 
