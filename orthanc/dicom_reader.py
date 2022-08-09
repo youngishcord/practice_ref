@@ -1,10 +1,19 @@
-from pydicom import dcmread
+import os
+import pydicom
+import numpy as np
+import matplotlib
+from matplotlib import pyplot
 
-ds = dcmread("./data/01_Баукова/КТ/652121513/DICOM/1.2.392.200036.9116.2.5.1.37.2418211076.1637897663.876915.dcm", force=True)#PA1_0001.dcm
-#C:\Users\kulik\Desktop\practice program\orthanc_\data\01_Баукова\КТ\652121513\DICOM\1.2.392.200036.9116.2.5.1.37.2418211076.1637897663.876915.dcm
-# Edit the (0010,0020) 'Patient ID' element
-print(ds)
-ds.PatientID = 40457
-print(ds.PatientID)
 
-#ds.save_as("/path/to/file_updated.dcm")
+folder_path = "./data/data_to_upl/SE4/"
+file_name = "1.2.392.200036.9116.2.5.1.3268.2051117476.1640498598.907503.dcm"
+#file_name = "IM2"
+file_path = os.path.join(folder_path,file_name)
+ds = pydicom.dcmread(file_path)
+
+print(ds.PatientName)
+#data = np.array(ds.pixel_array)
+#print(data)
+#
+pyplot.imshow(ds.pixel_array,cmap=pyplot.cm.bone)
+pyplot.show()

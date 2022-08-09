@@ -40,7 +40,7 @@ def main(login, passw, pid, attid, name):
     #    patientids.append(js['MainDicomTags']['PatientID'])
 
     if attid == None:
-        attid = input('input id of the attached resource: ') #можно переписать сценарий через echo click
+        attid = input('input id of the attached resource: ')
     
     if attid not in id_list:
         print('wrong attached id')
