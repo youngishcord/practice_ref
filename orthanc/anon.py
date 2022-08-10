@@ -12,29 +12,12 @@ import os
                 help='choose one of [patients, studies, series]')
 @click.option('--id', default=None, help='you can write resource id in call')
 @click.option('--dell', is_flag=True, help='delete old data')
-@click.option('--login', prompt='login', help='enter login')
-@click.option('--passw', prompt='password', help='enter password', hide_input=True)
-def main(login, passw, id, res, dell):
+def main(id, res, dell):
     '''
     anon
     '''
-    
-    basic = HTTPBasicAuth(login, passw)
-    
-    try:
-        q = requests.get('http://localhost:8042/system', auth=basic).content.decode('utf-8')
-        if q == '':
-            print('wrong login or password 1')
-            return
-    except:
-        print('wrong login or password 2')
-        return 
 
-    if res not in ['patients', 'studies', 'series']:
-        print('wrong request')
-        return
-
-    id_list = requests.get(f'http://localhost:8042/{res}', auth=basic).content.decode('utf-8')
+    id_list = requests.get(f'http://localhost:8042/{res}').content.decode('utf-8')
     id_list = json.loads(id_list)
     print(f'id list from {res}')
     print(id_list)
@@ -47,10 +30,10 @@ def main(login, passw, id, res, dell):
         return
 
     url = f'http://localhost:8042/{res}/{id}/anonymize'
-    requests.post(url, auth=basic, data=json.dumps({}))
+    requests.post(url, data=json.dumps({}))
 
     if dell:
-        requests.delete(f'http://localhost:8042/{res}/{id}', auth=basic)
+        requests.delete(f'http://localhost:8042/{res}/{id}')
 
 if __name__ == "__main__":
     main()

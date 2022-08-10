@@ -21,30 +21,18 @@ import os
 @click.option('--res', default='patients', help='choose one of [patients, studies, series]')
 ########################### убрать /\ вот это на '' #########################################
 @click.option('--id', default=None, help='you can write resources id in call')
-@click.option('--login', prompt='login', help='enter login')
-@click.option('--passw', prompt='password', help='enter password', hide_input=True)
-def main(res, id, login, passw):
+def main(res, id):
     '''
     download DICOM files as zip archive
     can download patient, studies or series archive
     '''
 
-    basic = HTTPBasicAuth(login, passw)
-
-    try:
-        q = requests.get('http://localhost:8042/system', auth=basic).content.decode('utf-8')
-        if q == '':
-            print('wrong login or password 1')
-            return
-    except:
-        print('wrong login or password 2')
-        return 
 
     if res not in ['patients', 'studies', 'series']:
         print('wrong request')
         return
 
-    id_list = requests.get(f'http://localhost:8042/{res}', auth=basic).content.decode('utf-8')
+    id_list = requests.get(f'http://localhost:8042/{res}').content.decode('utf-8')
     id_list = json.loads(id_list)
     print(f'id list from {res}')
     print(id_list)
@@ -57,7 +45,7 @@ def main(res, id, login, passw):
         return
     
     url = f'http://localhost:8042/{res}/{id}/archive'
-    r = requests.get(url, auth=basic)
+    r = requests.get(url)
 
     filename = r.headers.get("Content-Disposition")
     filename = re.findall('filename=(.+)', filename)[0].replace('"', '')
