@@ -8,8 +8,6 @@ from requests.auth import HTTPBasicAuth
 @click.option('--fname', default=None,
                 help='''enter file-name with .zip or smt if
                 file actually in current directory. Else you need add fpath.''')#prompt='enter file-name'
-@click.option('--login', prompt='login', help='enter login')
-@click.option('--passw', prompt='password', help='enter password', hide_input=True)
 def main(fpath, fname):
     '''
     Upload DICOM files from .zip archive or folder.

@@ -1,38 +1,46 @@
+from typing import Any, Collection
 import pymongo
 import json
 
 client = pymongo.MongoClient('localhost', 27017)
-print(client)
+#print(client)
 
 db = client['test2']
 
 collection = db['test2']
+print(type(collection))
 
-
-def insert_document(collection, data):
+def insert_document(collection: Collection, data: dict[str, Any]) -> Any | None:
     """ Function to insert a document into a collection and
     return the document's id.
     """
-    return collection.insert_one(data).inserted_id
+    try:
+        return collection.insert_one(data)
+    except Exception as ex:
+        print(ex)
+        return None
+    
+    #.inserted_id
 
 new_show = {
-    "_id" : "1",
+    #"_id" : "1",
     "name": "FRIENDS",
     "year": 1994
 }
-#print(insert_document(collection, new_show))
+print(type(insert_document(collection, new_show)))
 
-def find_document(collection, elements, multiple=False):
+def find_document(collection, elements, multiple=True):
     """ Function to retrieve single or multiple documents from a provided
     Collection using a dictionary containing a document's elements.
     """
     if multiple:
         results = collection.find(elements)
+        print(results)
         return [r for r in results]
     else:
         return collection.find_one(elements)
 
-#print(find_document(collection, {'name': 'FRIENDS'}))
+find_document(collection, {'name': 'FRIENDS'})
 
 def update_document(collection, query_elements, new_values):
     """ Function to update a single document in a collection.
@@ -52,7 +60,7 @@ def delete_document(collection, query):
     """
     collection.delete_one(query)
 
-delete_document(collection, {'name': "FRIENDS"})
+#delete_document(collection, {'name': "FRIENDS"})
 '''print(client.list_databases())
 for k in client.list_databases():
     print(k)

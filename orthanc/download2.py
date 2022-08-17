@@ -27,7 +27,6 @@ def main(res, id):
     can download patient, studies or series archive
     '''
 
-
     if res not in ['patients', 'studies', 'series']:
         print('wrong request')
         return
